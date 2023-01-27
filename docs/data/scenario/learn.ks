@@ -399,11 +399,13 @@ tf.y = -280;
 [ptext layer=0 text="&getLang('d-map')" size=40 x=&tf.x+230 y=&tf.y+480 name="header-drizzler"]
 [ptext layer=0 text="&getLang('stage-1')" size=30 x=&tf.x+60 y=&tf.y+585]
 [ptext layer=0 text="&getLang('stage-2')" size=30 x=&tf.x+60 y=&tf.y+655]
-[ptext layer=0 text="&getLang('stage-3')" size=30 x=&tf.x+60 y=&tf.y+725]
-[ptext layer=0 text="&getLang('stage-4')" size=30 x=&tf.x+60 y=&tf.y+795]
-[ptext layer=0 text="&getLang('stage-5')" size=30 x=&tf.x+60 y=&tf.y+865]
-[ptext layer=0 text="&getLang('rt-mode')+'：'+(sf.isRTMode?'ON':'OFF')" size=25 x=&tf.x+150 y=&tf.y+1000]
-[glink text="&getLang('toggle')" x=460 y=712 size=24 color=credit_button target=Panel_2_Toggle]
+;[ptext layer=0 text="&getLang('stage-3')" size=30 x=&tf.x+60 y=&tf.y+725]
+;[ptext layer=0 text="&getLang('stage-4')" size=30 x=&tf.x+60 y=&tf.y+795]
+;[ptext layer=0 text="&getLang('stage-5')" size=30 x=&tf.x+60 y=&tf.y+865]
+[ptext layer=0 text="&getLang('stage-6')" size=30 x=&tf.x+60 y=&tf.y+725] 
+[ptext layer=0 text="&getLang('stage-7')" size=30 x=&tf.x+60 y=&tf.y+795] 
+[ptext layer=0 text="&getLang('rt-mode')+'：'+(sf.isRTMode?'ON':'OFF')" size=25 x=&tf.x+150 y=&tf.y+1070]
+[glink text="&getLang('toggle')" x=460 y=782 size=24 color=credit_button target=Panel_2_Toggle]
 
 [glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+580 size=25 color=kancho target=*Panel_2_Init exp="f.course='shekenadamu';f.tide='low';"]
 [glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+580 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shekenadamu';f.tide='normal';"]
@@ -413,17 +415,25 @@ tf.y = -280;
 [glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+650 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='domburako';f.tide='normal';"]
 [glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+650 size=25 color=mancho target=*Panel_2_Init exp="f.course='domburako';f.tide='high';"]
 
-[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+720 size=25 color=kancho target=*Panel_2_Init exp="f.course='shaketoba';f.tide='low';"]
-[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+720 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shaketoba';f.tide='normal';"]
-[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+720 size=25 color=mancho target=*Panel_2_Init exp="f.course='shaketoba';f.tide='high';"]
+;[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+720 size=25 color=kancho target=*Panel_2_Init exp="f.course='shaketoba';f.tide='low';"]
+;[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+720 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shaketoba';f.tide='normal';"]
+;[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+720 size=25 color=mancho target=*Panel_2_Init exp="f.course='shaketoba';f.tide='high';"]
+;
+;[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+790 size=25 color=kancho target=*Panel_2_Init exp="f.course='tokishirazu';f.tide='low';"]
+;[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+790 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='tokishirazu';f.tide='normal';"]
+;[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+790 size=25 color=mancho target=*Panel_2_Init exp="f.course='tokishirazu';f.tide='high';"]
+;
+;[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+860 size=25 color=kancho target=*Panel_2_Init exp="f.course='porarisu';f.tide='low';"]
+;[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+860 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='porarisu';f.tide='normal';"]
+;[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+860 size=25 color=mancho target=*Panel_2_Init exp="f.course='porarisu';f.tide='high';"]
 
-[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+790 size=25 color=kancho target=*Panel_2_Init exp="f.course='tokishirazu';f.tide='low';"]
-[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+790 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='tokishirazu';f.tide='normal';"]
-[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+790 size=25 color=mancho target=*Panel_2_Init exp="f.course='tokishirazu';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+720 size=25 color=kancho target=*Panel_2_Init exp="f.course='shakespiral';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+720 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shakespiral';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+720 size=25 color=mancho target=*Panel_2_Init exp="f.course='shakespiral';f.tide='high';"]
 
-[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+860 size=25 color=kancho target=*Panel_2_Init exp="f.course='porarisu';f.tide='low';"]
-[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+860 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='porarisu';f.tide='normal';"]
-[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+860 size=25 color=mancho target=*Panel_2_Init exp="f.course='porarisu';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+790 size=25 color=kancho target=*Panel_2_Init exp="f.course='shakedent';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+790 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shakedent';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+790 size=25 color=mancho target=*Panel_2_Init exp="f.course='shakedent';f.tide='high';"]
 
 [return]
 

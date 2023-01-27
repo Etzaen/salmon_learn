@@ -72,6 +72,14 @@ window.LANG = {
 		'ja': 'ポラリス',
 		'en': 'Ark',
 	},
+	'stage-6': {
+		'ja': 'アラマキ砦',
+		'en': 'Sockeye',
+	},
+	'stage-7': {
+		'ja': 'ムニエル',
+		'en': 'Hydroplant',
+	},
 	'rt-mode': {
 		'ja': 'リアルタイムモード',
 		'en': 'Real-time mode',
