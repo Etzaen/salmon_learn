@@ -1875,6 +1875,12 @@
                 (this.$$container = new createjs.Container()),
                     (this.$$container.x = e.x),
                     (this.$$container.y = e.y),
+
+                    (this.$$handle = new createjs.Shape()),
+                    this.$$handle.graphics.beginFill("rgba(180, 180, 180, 0.01)"),
+                    this.$$handle.graphics.drawCircle(0, 0, 40 * this.pointer.currentCourse.scale),
+                    this.$$container.addChild(this.$$handle),
+                    
                     (this.$$lifeBarContainer = new createjs.Container()),
                     (this.$$lifeBarContainer.alpha = 0),
                     (this.$$lifeBarContainer.originAlpha = 0),
@@ -1910,7 +1916,7 @@
                       this.$$drizzler.on("mousedown", () => {
                           this.isAlive && this.isHeadstand && this.receiveDamage(85);
                       }))
-                    : f(this.pointer.stage, this.$$drizzler, [this.$$container, this.$$circle], {
+                    : f(this.pointer.stage, this.$$handle, [this.$$container, this.$$circle], {
                           isSticky: !0,
                           onMouseMoveStart: () => {
                               this.hideArrow();
