@@ -260,7 +260,7 @@
                 [1, 127, 255],
                 [255, 1, 127],
             ],
-            n = { "squid-a": {}, "squid-b": {}, "squid-c": {}, "squid-d": {}, steelhead: { range: 186, blast: 51 }, scrapper: {}, maws: {}, stinger: {}, flyfish: {}, steeleel: {}, griller: {}, goldie: {}, chum: {}, "egg-golden": {} },
+            n = { "squid-a": {}, "squid-b": {}, "squid-c": {}, "squid-d": {}, steelhead: { range: 186, blast: 51 }, scrapper: {}, maws: {}, stinger: {}, flyfish: {}, steeleel: {}, flipper: {}, bigshot: {}, slamminlid: { range: 140, }, fishstick: {},  mudmouth: {}, griller: {}, goldie: {}, chum: {}, "egg-golden": {} },
             a = ["rgb(150,220,150)", "rgb(217,255,217)", "rgb(217,255,217)"],
             o = ["rgb(255,160,255)", "rgb(255,200,255)", "rgb(255,200,255)"],
             h = "A".charCodeAt(),
@@ -2200,7 +2200,7 @@
                         ? ((this.$$circle = A({ x: t, y: r, radius: n * this.pointer.currentCourse.scale, colors: ["#fff", o[0]], colorRates: [0.7, 1] })), this.$$lowerLayer.addChild(this.$$circle))
                         : ((this.$$circle = new createjs.Shape()), this.$$lowerLayer.addChild(this.$$circle));
                 (this.$$handle = new createjs.Shape()),
-                    this.$$handle.graphics.beginFill("rgba(170, 170, 170, 0.7)"),
+                    this.$$handle.graphics.beginFill("rgba(180, 180, 180, 0.7)"),
                     this.$$handle.graphics.drawCircle(0, 0, i * s + 2),
                     this.$$container.addChild(this.$$handle),
                     (this.$$bitmap = $({ src: e, regX: i, regY: i, scale: s })),
@@ -2491,7 +2491,7 @@
                                         i.style.setProperty("display", "none"),
                                             ((t) => {
                                                 const i = p[t],
-                                                    n = new H(`${r.weaponImageDir}/${t}.png`, 320, 480, 64, 50 / 128, (i.range || 0) * (230 / 44), (i.blast || 0) * (230 / 44), o, {
+                                                    n = new H(`${r.weaponImageDir}/${t}.png`, 320, 480, 128, 50 / 256, (i.range || 0) * (4.7045), (i.blast || 0) * (4.7045), o, {
                                                         stage: e,
                                                         bitmaps: g,
                                                         currentCourse: s,
