@@ -1,3 +1,262 @@
+const xmlCache = {};
+$.loadXML = function(src) {
+    return new Promise((resolve) => {
+        if (src in xmlCache) {
+            resolve(xmlCache[src]);
+        } else {
+            $.ajax({
+                url: src,
+                type: 'GET',
+                dataType: 'xml',
+                timeout: 1000,
+                success: function(xml) {
+                    xmlCache[src] = xml;
+                    resolve(xml);
+                }
+            });
+        }
+    });
+};
+$.fn.getXY = function() {
+    const x = parseFloat(this.css('left')) || 0;
+    const y = parseFloat(this.css('top')) || 0;
+    return {x, y};
+};
+/** setXY(x, y)
+ */
+$.fn.setXY = function(x, y) {
+    if (typeof x === 'object') {
+        y = x.y;
+        x = x.x;
+    }
+    const left = parseFloat(x) + 'px';
+    const top = parseFloat(y) + 'px';
+    this.css({ left, top });
+    return this;
+};
+/** setWH(w, h)
+ */
+$.fn.setWH = function(w, h) {
+    if (typeof w === 'object') {
+        h = w.h || w.height;
+        w = w.w || w.width;
+    }
+    const width = parseFloat(w) + 'px';
+    const height = parseFloat(h) + 'px';
+    this.css({ width, height });
+    return this;
+};
+/** getWH()
+ */
+$.fn.getWH = function() {
+    const width = parseFloat(this.css('width'));
+    const height = parseFloat(this.css('height'));
+    return { width, height };
+};
+/** canvasToStage()
+ */
+const LAYER_MANAGER_LIST = [
+	{ name: 'layer-basket', target: 'CoopIkuraBankBase' },
+	{ name: 'layer-gusher', target: 'CoopSpawnGeyser' },
+	{ name: 'layer-cannon', target: 'CoopTurret'	},
+	//{ name: 'layer-area', target: 'Obj_CoopGraphArea'	},
+	//{ name: 'layer-node-link' },
+	//{ name: 'layer-node', target: 'CoopGraphNode' },
+	{ name: 'layer-startpos', target: 'StartPos' },
+	{ name: 'layer-spawner', target: 'Obj_CoopSpawnPointZako' },
+	{ name: 'layer-drizzler-link' },
+	{ name: 'layer-voronoi' },
+	{ name: 'layer-drizzler', target: 'CoopSakerocketJumpPoint' },
+	{ name: 'layer-flyfish', target: 'Obj_CoopArrivalPointEnemyCup' },
+	//{ name: 'layer-stinger', target: 'Obj_CoopArrivalPointEnemyTower' },
+	{ name: 'layer-mothership', target: 'CoopSakeCarrierSpawnDefeatPos' },
+	//{ name: 'layer-rail', target: 'Rail_Pink' },
+	{ name: 'layer-steelhead', isHidden: true },
+	{ name: 'layer-steeleel', isHidden: true },
+	{ name: 'layer-item', isHidden: true }
+];
+
+function convert(x, z) {
+	const newX = (x + 1200);
+	const newZ = (z + 1200);
+	return [newX, newZ]; 
+}
+function isTideEqual(tide, obj) {
+	return (
+	   (tide === 'low'    && obj.layer === 'Low')
+	|| (tide === 'normal' && obj.layer === 'Mid')
+	|| (tide === 'high'   && obj.layer === 'High'));
+}
+function isTideEqualOrMore(tide, obj) {
+	return (
+	   (tide === 'low'    && (obj.layer === 'High' || obj.layer === 'Mid' || obj.layer === 'Low'))
+	|| (tide === 'normal' && (obj.layer === 'High' || obj.layer === 'Mid'))
+	|| (tide === 'high'   && (obj.layer === 'High')));
+}
+
+
+
+let stageObjects;
+let stageObjectsReady = false;
+let stageObjectsReadyFuncs = [];
+var drizzlerObjects;
+let $drizzlerLinkCanvas;
+let drizzlerLinkCtx;
+let currentFilename = '';
+
+function filterStageObjects(group, layer) {
+	const ret = [];
+	stageObjects.forEach((obj) => {
+		if (group && !obj.group.includes(group)) return;
+		if (layer && !obj.layer.includes(layer)) return;
+		ret.push(obj);
+	});
+    console.log(ret);
+	return ret;
+}
+
+function readXML(xml) {
+	function sv1(elm, query) {
+		const target = elm.querySelector(query);
+		return (target) ? target.getAttribute('StringValue') : '';
+	}
+	function sv2(elm, query) {
+		const arr = elm.querySelectorAll(query);
+		return arr[arr.length - 1].getAttribute('StringValue');
+	}
+	function sv3(elm) {
+		const link = elm.querySelector('[Name=Links]');
+		if (link) {
+			
+            const c1s = link.querySelectorAll('C1');
+            if (c1s.length) {
+                const ids = [];
+                Array.prototype.forEach.call(c1s, (c1) => {
+                    const a = c1.querySelector('[Name=Dst]');
+                    if (a) {
+                        const id = a.getAttribute('StringValue');
+                        ids.push(id);
+                    }
+                });
+                //console.log(ids);
+                return ids;
+            }
+			
+		}
+		return null;
+	}
+	function parseJSON(element) {
+		const data = {};
+		const children = element.children;
+		Array.prototype.forEach.call(children, (child, i) => {
+			let name = child.getAttribute('Name');
+			if (!name) {
+				name = i;
+				data.length = i + 1;
+			}
+			let value = child.getAttribute('StringValue');
+			if (value) {
+				const float = parseFloat(value);
+				if (!isNaN(float)) {
+					value = float;
+				}
+				data[name] = value;
+			} else {
+				data[name] = parseJSON(child);
+			}
+		});
+        //console.log(data);
+		return data;
+	}
+	const doc = xml.documentElement;
+	const elms = doc.querySelectorAll('Root>C1>C0>C1');
+	const objs = [];
+	const layerNames = [];
+	const groupNames = [];
+	const groupCounts = {};
+	Array.prototype.forEach.call(elms, (item, i) => {
+		const json = parseJSON(item);
+		const id = sv1(item, '[Name=Id]');
+		const layer = sv1(item, '[Name=Layer]');
+		const group = sv2(item, '[Name=Gyaml]');
+		const index = sv1(item, '[Name=InTeamIndex]');
+		const tx = parseFloat(sv1(item, '[Name=Translate]>D2:nth-child(1)'));
+		const ty = parseFloat(sv1(item, '[Name=Translate]>D2:nth-child(2)'));
+		const tz = parseFloat(sv1(item, '[Name=Translate]>D2:nth-child(3)'));
+		const sx = parseFloat(sv1(item, '[Name=Scale]>D2:nth-child(1)'));
+		const sy = parseFloat(sv1(item, '[Name=Scale]>D2:nth-child(2)'));
+		const sz = parseFloat(sv1(item, '[Name=Scale]>D2:nth-child(3)'));
+		const rx = parseFloat(sv1(item, '[Name=Rotate]>D2:nth-child(1)'));
+		const ry = parseFloat(sv1(item, '[Name=Rotate]>D2:nth-child(2)'));
+		const rz = parseFloat(sv1(item, '[Name=Rotate]>D2:nth-child(3)'));
+		const links = sv3(item);
+		if (!layerNames.includes(layer)) {
+			layerNames.push(layer);
+		}
+		if (!groupNames.includes(group)) {
+			groupNames.push(group);
+			groupCounts[group] = 1;
+		} else {
+			groupCounts[group]++;
+		}
+		const num = groupCounts[group];
+		const data = {
+			id, num, index, layer, group, tx, ty, tz,
+			sx, sy, sz, rx, ry, rz, links, json
+		};
+        
+		objs.push(data);
+	});
+	stageObjects = objs;
+	drizzlerObjects = filterStageObjects('CoopSakerocketJumpPoint');
+	/*
+    LAYER_MANAGER_LIST.forEach((layerItem) => {
+		if (!layerItem.target) {
+			return;
+		}
+		const $layer = $('#' + layerItem.name);
+		objs.forEach((obj) => {
+			if (obj.group.includes(layerItem.target)) {
+				const $obj = objectCreater[obj.group](obj, this.pointer.course, this.pointer.tide, 'floorplan');
+				if ($obj) {
+					$obj.attr('title', `${obj.id}`);
+					$layer.append($obj);
+				}
+			}
+		});
+	});
+    */
+
+	stageObjectsReady = true;
+	if (stageObjectsReadyFuncs.length) {
+		stageObjectsReadyFuncs.forEach((fn) => {
+			fn();
+		});
+		stageObjectsReadyFuncs = [];
+	}
+}
+
+function loadStage(options) {
+    if (window.XMLHttpRequest) {
+        var xhttp = new XMLHttpRequest();
+     } else {    // IE 5/6
+        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+     }
+    xhttp.overrideMimeType('text/xml');
+
+    let isXMLReady = false;
+
+    stageObjectsReady = false;
+    
+	$.loadXML(`./tyrano/drizzler/assets/xml/Cop_Shakeup.bcett.xml`).then((data) => {
+		isXMLReady = true;
+		readXML(data);
+		
+	});
+}
+
+
+
 !(function (e) {
     var t = {};
     function r(i) {
@@ -242,6 +501,7 @@
             (t.default = s);
     },
     function (e, t, r) {
+        //loadStage();
         "use strict";
         r.r(t);
         r(1);
@@ -265,7 +525,174 @@
             o = ["rgb(255,160,255)", "rgb(255,200,255)", "rgb(255,200,255)"],
             h = "A".charCodeAt(),
             l = Math.floor(60),
+            
             c = {
+                shakeup: {
+                    normal: {
+                        name: { ja: "シェケナダム通常潮", en: "Spawning-Grounds-Normal-Tide" },
+                        parks: [
+                            [-29.1597, -1.9214],  //A Mid
+                            [-42.7347, 21.2972], //B Mid
+                            [-63.6533, 20.5737], //C Mid
+                            [-49.5511, -6.2496], //D Mid
+                            [-67.63, -13.5981], //E Mid
+                            [-29.62, -26.5089], //F Mid
+                            [-19.334, -37.6614], //G Mid
+                            [-4.276, -34.5676], //H Mid
+                            [-0.077, -9.931], //I Mid
+                            [8.43933, 5.187028], //J Mid
+                            [-9.016, 7.743], //K Mid
+                            [3.735916, 23.877], //L Mid
+                        ],
+                        lines: ["LK", "LJ", "JK", "IJ", "IK", "IA", "IF", "IG", "IH", "KA", "AF", "FG", "GH", "AB", "BD", "DA", "DF", "FE", "ED", "CB", "CD", "CE"],
+                        width: 2400,
+                        height: 2400,
+                        scale: 0.62,
+                        regX: 940,
+                        regY: 1060,
+                        rotation: 180,
+                        homes: [
+                            [1185, 1063],
+                            [1134, 1063],
+                            [1134, 1125],
+                            [1185, 1125],
+                        ],
+                        spawners: [
+                            {
+                                name: "shomen",
+                                probability: 35,
+                                vertexes: [
+                                    [1240, 1674],
+                                    [1093, 1581],
+                                    [947, 1522],
+                                ],
+                            },
+                            {
+                                name: "kanaami",
+                                probability: 35,
+                                vertexes: [
+                                    [1601, 745],
+                                    [1664, 905],
+                                    [1464, 1238],
+                                ],
+                            },
+                            {
+                                name: "kancho",
+                                probability: 30,
+                                vertexes: [
+                                    [1056, 656],
+                                    [903, 742],
+                                    [819, 968],
+                                ],
+                            },
+                        ],
+                    },
+                    high: {
+                        name: { ja: "シェケナダム満潮", en: "Spawning-Grounds-High-Tide" },
+                        excludeParks: ["L", "J", "H", "G", "B", "C", "D"],
+                        pushedParks: { 
+                            //4: [1619, 1149] 
+                            0: [-27.19, -1.9251], //A
+                            4: [-64.17, -13.95], //E
+                            5: [-29.8, -26.5], //F
+                            8: [-1.13, -10.17], //I
+                            10: [-9.016, 7.74], //K
+                        },
+                        additionalLines: ["EA"],
+                        spawners: [
+                            {
+                                name: "shomen",
+                                probability: 35,
+                                vertexes: [
+                                    [1007, 1130],
+                                    [1060, 1196],
+                                    [1196, 1196],
+                                ],
+                            },
+                            {
+                                name: "kanaami",
+                                probability: 35,
+                                vertexes: [
+                                    [1415, 859],
+                                    [1608, 1099],
+                                ],
+                            },
+                            {
+                                name: "kancho",
+                                probability: 30,
+                                vertexes: [
+                                    [1016, 1044],
+                                    [1132, 937],
+                                    [1011, 871],
+                                ],
+                            },
+                        ],
+                    },
+                    low: {
+                        name: { ja: "シェケナダム干潮", en: "Spawning-Grounds-Low-Tide" },
+                        parks: [
+                            [34.328, 23.44], //A Low
+                            [24.7878, 57.3192], //B low
+                            [4.77, 38.5832], //C Low
+                            [7.6682, 5.6735], //D Low
+                            [28.49, -9.314],//E Low
+                            [59.06, -0.5175], //F Low
+                            [51.2792, 30.3778], //G Low 
+                            [-0.077, -9.931], //H Low
+                            [-21.016, 8.743], //I Low
+                            [-15.3, 23.21], //J Low
+                            
+                            //[-4.276, -34.5676], 
+                            //[-67.63, -13.5981], 
+                            //[-31.12, -26.5], 
+                            //[-63.6533, 20.5737], 
+                            //[-29.1597, -1.9214], 
+                            //[-21.834, -37.6614], 
+                        ],
+                        lines: ["FE", "FA", "GA", "GE", "BA", "BC", "AE", "AD", "AC", "ED", "CD", "DH", "DI", "DJ", "HI", "JI", "CJ"],
+                        width: 2e3,
+                        height: 2e3,
+                        scale: 0.6,
+                        regX: 1349,
+                        regY: 1313,
+                        rotation: 237.5,
+                        homes: [
+                            [737, 772],
+                            [700, 830],
+                            [753, 864],
+                            [790, 805],
+                        ],
+                        spawners: [
+                            {
+                                name: "shomen",
+                                probability: 35,
+                                vertexes: [
+                                    [342, 739],
+                                    [311, 597],
+                                    [488, 537],
+                                ],
+                            },
+                            {
+                                name: "hidari",
+                                probability: 35,
+                                vertexes: [
+                                    [417, 1068],
+                                    [282, 1005],
+                                    [312, 890],
+                                ],
+                            },
+                            {
+                                name: "migi",
+                                probability: 30,
+                                vertexes: [
+                                    [672, 464],
+                                    [700, 358],
+                                    [860, 368],
+                                ],
+                            },
+                        ],
+                    },
+                },
                 shekenadamu: {
                     normal: {
                         name: { ja: "シェケナダム通常潮", en: "Spawning-Grounds-Normal-Tide" },
@@ -1437,7 +1864,7 @@
             }
             convertCoordinates(e) {
                 this.width, this.height;
-                const t = v({ x: (e[0] - this.regX) * this.scale, y: (e[1] - this.regY) * this.scale }, this.rotation),
+                const t = v({ x: ((e[0] * 10) - this.regX + 1200) * this.scale, y: ((e[1] * 10)- this.regY + 1200) * this.scale }, this.rotation),
                     r = this.canvasWidth / 2 + t.x,
                     i = this.canvasHeight / 2 + t.y;
                 (e[0] = r), (e[1] = i);
