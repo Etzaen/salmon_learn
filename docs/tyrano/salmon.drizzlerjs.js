@@ -520,7 +520,7 @@ function loadStage(options) {
                 [1, 127, 255],
                 [255, 1, 127],
             ],
-            n = { "squid-a": {}, "squid-b": {}, "squid-c": {}, "squid-d": {}, steelhead: { range: 186, blast: 51 }, scrapper: {}, maws: {}, stinger: {}, flyfish: {}, steeleel: {}, flipper: {}, bigshot: {}, slamminlid: { range: 140, }, fishstick: {},  mudmouth: {}, griller: {}, goldie: {}, chum: {}, "egg-golden": {} },
+            n = { "squid-a": {}, "squid-b": {}, "squid-c": {}, "squid-d": {}, steelhead: { range: 200, blast: 50 }, scrapper: {}, maws: {}, stinger: {}, flyfish: {}, steeleel: {}, flipper: {}, bigshot: {}, slamminlid: { range: 140, }, fishstick: {},  mudmouth: {}, griller: {}, goldie: {}, chum: {}, "egg-golden": {} },
             a = ["rgb(150,220,150)", "rgb(217,255,217)", "rgb(217,255,217)"],
             o = ["rgb(255,160,255)", "rgb(255,200,255)", "rgb(255,200,255)"],
             h = "A".charCodeAt(),
@@ -2326,7 +2326,7 @@ function loadStage(options) {
                     (this.$$lifeBarContainer.originAlpha = 0),
                     this.$$container.addChild(this.$$lifeBarContainer),
                     this.$$parentLayer.addChild(this.$$container),
-                    (this.$$circle = A({ x: e.x, y: e.y, radius: 322 * this.pointer.currentCourse.scale, colors: ["#fff", "rgb(180, 230, 255)"], colorRates: [0.7, 1], strokeWidth: 1, strokeColor: "rgb(180, 230, 255)" })),
+                    (this.$$circle = A({ x: e.x, y: e.y, radius: 300 * this.pointer.currentCourse.scale, colors: ["#fff", "rgb(180, 230, 255)"], colorRates: [0.7, 1], strokeWidth: 1, strokeColor: "rgb(180, 230, 255)" })),
                     this.$$lowerLayer.addChild(this.$$circle),
                     (this.$$arrow = (function () {
                         const e = new createjs.Shape();
