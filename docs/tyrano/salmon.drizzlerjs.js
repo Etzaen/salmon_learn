@@ -244,11 +244,10 @@ function loadStage(options) {
      }
     xhttp.overrideMimeType('text/xml');
 
-    let isXMLReady = false;
 
     stageObjectsReady = false;
     
-	$.loadXML(`./tyrano/drizzler/assets/xml/Cop_Shakeup.bcett.xml`).then((data) => {
+	$.loadXML(`./tyrano/drizzler/assets/xml/Cop_Shakeship.bcett.xml`).then((data) => {
 		isXMLReady = true;
 		readXML(data);
 		
@@ -501,10 +500,10 @@ function loadStage(options) {
             (t.default = s);
     },
     function (e, t, r) {
-        //loadStage();
         "use strict";
         r.r(t);
         r(1);
+        //loadStage();
         const i = ["course", "drizzler", "tool"],
             s = [
                 [255, 255, 1],
@@ -701,6 +700,203 @@ function loadStage(options) {
                                     [81, 7.5],
                                     [65.25, -13.5],
                                     [-52.5, 20.25],
+                                ],
+                            },
+                        ],
+                    },
+                },
+                shakeship: {
+                    normal: {
+                        name: { ja: "ドンブラコ通常潮", en: "Marooners-Bay-Normal-Tide" },
+                        parks: [
+                            [-36, -7.25], //A
+                            [-18, 5.5], //B
+                            [-6.5, -8.5], //C
+                            [0, 3.5], //D
+                            [10.5, -5.25], //E
+                            [13.25, 8.5], //F
+                            [19.75, 0], //G
+                            [27.25, 14.75], //H
+                            [-26.25, -34.25], //I
+                            [-16.75, -22.25], //J
+                            [-11, -40.5],  //K
+                            [11.75, -22.5], //L
+                            [18.25, -43], //M
+                            [24, -9], //N
+                            [31.75, -18.5], //O
+                            [41.75, -3], //P
+                            [41.75, 12.5], //Q
+                            [35, 20.75], //R
+                            [13.25, 21.25], //S
+                            [-8.25, 17], //T
+                            [-24, 29], //U
+                            [-37.5, 27.25], //V
+
+                        ],
+                        lines: ["ML", "KJ", "IJ", "LJ", "JC", "CA", "LN", "ON", "OP", "PN", "PQ", "QR", "QH", "HR", "HG", "GF", "FH", "SR", "SF", "ST", "GN", "NE", "EG", "DE", "DF", "DC", "DB", "TU", "UV", "BA", "EC", "BT", "CB"],
+                        width: 2400,
+                        height: 2400,
+                        scale: 0.66,
+                        regX: 1205,
+                        regY: 1120,
+                        rotation: -90,
+                        homes: [
+                            [-40.25, -2.25],
+                            [-38.5, -1],
+                            [-38.5, 1],
+                            [-40.25, 2.25],
+                        ],
+                        spawners: [
+                            {
+                                name: "shomen",
+                                probability: 35,
+                                vertexes: [
+                                    [784, 257],
+                                    [1070, 196],
+                                    [1345, 323],
+                                ],
+                            },
+                            {
+                                name: "hidari",
+                                probability: 30,
+                                vertexes: [
+                                    [582, 380],
+                                    [521, 802],
+                                    [585, 991],
+                                ],
+                            },
+                            {
+                                name: "migi",
+                                probability: 35,
+                                vertexes: [
+                                    [1228, 1191],
+                                    [1368, 1054],
+                                    [1358, 822],
+                                ],
+                            },
+                        ],
+                    },
+                    high: {
+                        name: { ja: "ドンブラコ満潮", en: "Marooners-Bay-High-Tide" },
+                        regX: 1205,
+                        regY: 1170,
+                        excludeParks: ["K", "I", "J", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V"],
+                        pushedParks: {
+                            0: [-36, -7.25], //High A
+                            1: [-18, 5.5], //High B
+                            2: [-6.5, -8.5], //High C
+                            3: [0, 3.5], //High D
+                            4: [10.5, -5.25], //High E
+                            5: [13.25, 8.5], //High F
+                            6: [19.75, 0], //High G
+                            7: [27.25, 14.75], //High H
+                        },
+                        additionalLines: [],
+                        spawners: [
+                            {
+                                name: "shomen",
+                                probability: 35,
+                                vertexes: [
+                                    [1162, 354],
+                                    [1031, 352],
+                                    [998, 443],
+                                ],
+                            },
+                            {
+                                name: "hidari",
+                                probability: 30,
+                                vertexes: [
+                                    [1009, 443],
+                                    [946, 440],
+                                    [946, 530],
+                                ],
+                            },
+                            {
+                                name: "migi",
+                                probability: 35,
+                                vertexes: [
+                                    [1161, 354],
+                                    [1142, 502],
+                                    [1147, 629],
+                                ],
+                            },
+                        ],
+                    },
+                    low: {
+                        name: { ja: "ドンブラコ干潮", en: "Marooners-Bay-Low-Tide" },
+                        parks: [
+                            [-51.5, 23.25], //A
+                            [-65.5, 32], //B
+                            [-75.5, 36.25], //C
+                            [-86.75, 27.75], //Low D
+                            [-87.25, 4.25], //E
+                            [-63, -1.5], //F
+                            [-52.75, -9.25], //G
+                            [-70.75, -28], //H
+                            [-38, -22.5], //I
+                            [-36.25, 5.5], //J
+                            [-36.25, -7.25], //K
+                            [-37.75, 27.25], //L
+                            //[10.25, -5.25],
+                            //[-0.25, 3.5],
+                            //[-11.25, -40.5],
+                            //[13, 8.5],
+                            //[13, 21.25],
+                            //[-6.755469, -8.422655],
+                            //[41.5, -3],
+                            //[18, -43],
+                            //[-24.25, 29],
+                            //[-17, -22.25],
+                            //[27, 14.75],
+                            //[34.75, 20.75],
+                            //[-8.5, 17],
+                            //[41.5, 12.5],
+                            //[-18.25, 5.5],
+                            //[31.5, -18.5],
+                            //[19.5, 0],
+                            //[11.5, -22.5],
+                            //[-26.5, -34.25],
+                            //[23.75, -9.000001],
+                        ],
+                        lines: ["AB", "BC", "CD", "DE", "EF", "FA", "AL", "AJ", "JK", "KG", "GF", "GI", "GH"],
+                        width: 2400,
+                        height: 2400,
+                        scale: 0.74,
+                        regX: 740,
+                        regY: 1220,
+                        rotation: 90,
+                        homes: [
+                            [-39.25, 4.5],
+                            [-39.24968, -4.5],
+                            [-40.5, 1.5],
+                            [-40.5, -1.5],
+                        ],
+                        spawners: [
+                            {
+                                name: "shomen",
+                                probability: 35,
+                                vertexes: [
+                                    [1157, 1819],
+                                    [1054, 1843],
+                                    [975, 1782],
+                                ],
+                            },
+                            {
+                                name: "hidari",
+                                probability: 35,
+                                vertexes: [
+                                    [1409, 1728],
+                                    [1519, 1641],
+                                    [1574, 1548],
+                                ],
+                            },
+                            {
+                                name: "migi",
+                                probability: 30,
+                                vertexes: [
+                                    [755, 1606],
+                                    [602, 1629],
+                                    [558, 1462],
                                 ],
                             },
                         ],

@@ -410,14 +410,16 @@ tf.y = -280;
 ;[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+580 size=25 color=kancho target=*Panel_2_Init exp="f.course='shekenadamu';f.tide='low';"]
 ;[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+580 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shekenadamu';f.tide='normal';"]
 ;[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+580 size=25 color=mancho target=*Panel_2_Init exp="f.course='shekenadamu';f.tide='high';"]
-
 [glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+580 size=25 color=kancho target=*Panel_2_Init exp="f.course='shakeup';f.tide='low';"]
 [glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+580 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shakeup';f.tide='normal';"]
 [glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+580 size=25 color=mancho target=*Panel_2_Init exp="f.course='shakeup';f.tide='high';"]
 
-[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+650 size=25 color=kancho target=*Panel_2_Init exp="f.course='domburako';f.tide='low';"]
-[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+650 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='domburako';f.tide='normal';"]
-[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+650 size=25 color=mancho target=*Panel_2_Init exp="f.course='domburako';f.tide='high';"]
+;[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+650 size=25 color=kancho target=*Panel_2_Init exp="f.course='domburako';f.tide='low';"]
+;[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+650 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='domburako';f.tide='normal';"]
+;[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+650 size=25 color=mancho target=*Panel_2_Init exp="f.course='domburako';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+650 size=25 color=kancho target=*Panel_2_Init exp="f.course='shakeship';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+650 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shakeship';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+650 size=25 color=mancho target=*Panel_2_Init exp="f.course='shakeship';f.tide='high';"]
 
 ;[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+720 size=25 color=kancho target=*Panel_2_Init exp="f.course='shaketoba';f.tide='low';"]
 ;[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+720 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shaketoba';f.tide='normal';"]
